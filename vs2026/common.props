@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    公共属性表 common.props  ——  C/C++ 练习环境统一配置
+    位置：D:\cpp\vs2026\common.props
+    作用：1) 源码一律按 UTF-8 读取（含 /source-charset:utf-8）
+          2) 关闭 SDL 检查，避免 C4700「使用了未初始化的局部变量」被当成错误
+    用法：VS 里右键工程 → 添加 → 现有属性表 → 选中本文件
+  -->
+
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+
+  <!-- 默认值：工程自己没写这两项时用这里的值 -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!--
+    强制层：MSBuild 求值顺序是 属性 → 项定义 → 项，且"后出现的规格胜出"。
+    工程模板自己写了 <SDLCheck>true</SDLCheck> 时，会盖掉上面的默认值。
+    这里在编译目标执行前再改一次项元数据，保证 SDL 一定是关闭的。
+    （与 VS 自带 Microsoft.Cpp.ClangTidy.targets 修改元数据的手法一致）
+  -->
+  <Target Name="WB_ForceCommonSettings" BeforeTargets="ClCompile">
+    <ItemGroup>
+      <ClCompile>
+        <SDLCheck>false</SDLCheck>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+</Project>

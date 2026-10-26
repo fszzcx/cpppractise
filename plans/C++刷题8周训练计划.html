@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ 刷题 8 周训练计划</title>
+<style>
+  :root{
+    --bg:#1b1b1e; --surface:#242428; --surface2:#2c2c31;
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --tx:#E9E7E2; --tx2:#A9A6A1; --tx3:#7A7873;
+    --accent:#5DCAA5; --accent-dim:#1D9E75; --accent-bg:rgba(29,158,117,.12);
+    --warn:#EF9F27; --warn-bg:rgba(239,159,39,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--tx);
+    font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif;
+    font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{
+    position:sticky; top:0; z-index:10; background:rgba(27,27,30,.94);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:16px 28px 14px;
+  }
+  .hin{max-width:920px; margin:0 auto}
+  .htop{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+  h1{font-size:17px; font-weight:500; margin:0}
+  .sub{font-size:12px; color:var(--tx3)}
+  .prow{display:flex; align-items:center; gap:14px; margin-top:12px}
+  .bar{flex:1; height:8px; background:var(--surface2); border-radius:4px; overflow:hidden}
+  .fill{height:100%; width:0; background:var(--accent-dim); border-radius:4px; transition:width .3s}
+  .stat{font-size:12px; color:var(--tx2); font-variant-numeric:tabular-nums; white-space:nowrap}
+  #reset{
+    background:transparent; border:1px solid var(--line2); color:var(--tx3);
+    font-size:12px; padding:4px 12px; border-radius:6px; cursor:pointer; font-family:inherit;
+  }
+  #reset:hover{color:var(--tx); border-color:var(--tx3)}
+  main{max-width:920px; margin:0 auto; padding:26px 28px 100px}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:18px 22px; margin-bottom:22px}
+  .card h2{font-size:15px; font-weight:500; margin:0 0 12px}
+  .card h3{font-size:13.5px; font-weight:500; margin:16px 0 6px; color:var(--accent)}
+  .card ol,.card ul{margin:6px 0; padding-left:22px; color:var(--tx2)}
+  .card li{margin-bottom:7px}
+  .card li b{color:var(--tx); font-weight:500}
+  .week{background:var(--surface); border:1px solid var(--line); border-radius:11px; margin-bottom:20px; overflow:hidden}
+  .whead{padding:16px 22px 14px; border-bottom:1px solid var(--line); background:var(--surface2)}
+  .wtitle{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+  .wnum{font-size:11px; color:var(--accent); background:var(--accent-bg); padding:2px 9px; border-radius:5px; white-space:nowrap}
+  .wtitle h2{font-size:15px; font-weight:500; margin:0; flex:1}
+  .wprog{font-size:11.5px; color:var(--tx3); font-variant-numeric:tabular-nums; white-space:nowrap}
+  .goal{font-size:13px; color:var(--tx2); margin-top:9px}
+  .wbody{padding:16px 22px 18px}
+  .lbl{font-size:11.5px; color:var(--tx3); margin:0 0 7px; letter-spacing:.4px}
+  .pts{margin:0 0 16px; padding-left:20px; color:var(--tx2); font-size:13.5px}
+  .pts li{margin-bottom:5px}
+  .pts code{background:var(--surface2); padding:1px 6px; border-radius:4px; font-family:Consolas,Monaco,monospace; font-size:12.5px; color:#9FE1CB}
+  .plist{display:flex; flex-direction:column; gap:1px}
+  .pitem{display:flex; align-items:center; gap:11px; padding:7px 11px; border-radius:7px; transition:background .12s; cursor:pointer}
+  .pitem:hover{background:var(--surface2)}
+  .pitem input{appearance:none; width:17px; height:17px; border:1.5px solid var(--line2); border-radius:4px; margin:0; flex:none; cursor:pointer; position:relative; transition:all .15s}
+  .pitem input:checked{background:var(--accent-dim); border-color:var(--accent-dim)}
+  .pitem input:checked::after{content:""; position:absolute; left:5px; top:1.5px; width:4px; height:8px; border:solid #0d2b21; border-width:0 2px 2px 0; transform:rotate(45deg)}
+  .pitem .pid{font-family:Consolas,Monaco,monospace; font-size:12.5px; color:var(--accent); flex:none; width:62px}
+  .pitem .pname{flex:1; font-size:13.5px; color:var(--tx)}
+  .pitem input:checked ~ .pname{color:var(--tx3); text-decoration:line-through}
+  .diff{font-size:11px; padding:1.5px 8px; border-radius:5px; white-space:nowrap; flex:none}
+  .d0{background:rgba(29,158,117,.15); color:#5DCAA5}
+  .d1{background:rgba(55,138,221,.15); color:#85B7EB}
+  .d2{background:var(--warn-bg); color:#EF9F27}
+  .check{margin-top:16px; padding:11px 15px; background:var(--accent-bg); border-left:2px solid var(--accent-dim); border-radius:0 8px 8px 0; font-size:13px; color:var(--tx2)}
+  .check b{color:var(--accent); font-weight:500}
+  pre{background:#141417; border:1px solid var(--line); border-radius:9px; padding:14px 16px; overflow-x:auto; margin:10px 0; font-family:Consolas,Monaco,monospace; font-size:12.5px; line-height:1.75; color:#C9C6C0}
+  pre .c{color:#5F5E5A}
+  pre .k{color:#9FE1CB}
+  .tip{font-size:12.5px; color:var(--tx3); margin-top:10px}
+  .compact{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:11px; margin-top:12px}
+  .cbox{background:var(--surface2); border-radius:9px; padding:13px 15px}
+  .cbox .t{font-size:12.5px; font-weight:500; color:var(--accent); margin-bottom:5px}
+  .cbox .d{font-size:12.5px; color:var(--tx2)}
+  @media (max-width:700px){
+    header,main{padding-left:15px; padding-right:15px}
+    .prow{flex-wrap:wrap; gap:8px}
+    .pitem .pid{width:56px}
+    .diff{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hin">
+    <div class="htop">
+      <h1>C++ 刷题 8 周训练计划</h1>
+      <div class="sub">从只会基础语法，到能独立解算法题</div>
+    </div>
+    <div class="prow">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="stat" id="stat">0 / 0</div>
+      <button id="reset">重置进度</button>
+    </div>
+  </div>
+</header>
+<main>
+
+<div class="card">
+  <h2>开始之前，先记住五条方法</h2>
+  <ol>
+    <li><b>20 分钟规则</b> —— 一道题自己啃 20 分钟毫无进展，就去看题解。但看完必须<b>关掉题解，从头自己重写一遍</b>。抄一遍不等于会，重写才是。</li>
+    <li><b>建错题本</b> —— 每道卡住的题记三行：题目链接 / 卡在哪 / 关键思路。每周日花 30 分钟重做一遍。这是整个计划里复利最高的一件事。</li>
+    <li><b>按主题刷，不要随机刷</b> —— 一周只专注一个知识点。跳着刷会感觉每题都是新的，进步极慢。</li>
+    <li><b>提交前先自己造数据</b> —— 测最小值、最大值、空数据、全相同。这个习惯在面试现场能救你。</li>
+    <li><b>看题解要看"为什么"</b> —— 不只看代码，看作者是怎么想到的。<b>思考过程比代码值钱。</b></li>
+  </ol>
+  <h3>每周节奏（对应 10–20 小时投入）</h3>
+  <ul>
+    <li>周一、周二：学新知识点，各 2 小时</li>
+    <li>周三到周五：每天 1–2 题，各 1.5 小时</li>
+    <li>周六：专攻本周最难的一题，2–3 小时</li>
+    <li>周日：重做本周错题 + 总结，1–2 小时</li>
+  </ul>
+</div>
+
+<div id="weeks"></div>
+
+<div class="card">
+  <h2>STL 速查表（刷题只用到这些）</h2>
+  <pre><span class="c">// 万能头文件，刷题时用它就不用记一堆 include</span>
+<span class="k">#include</span> &lt;bits/stdc++.h&gt;
+<span class="k">using namespace</span> std;
+
+<span class="c">// 加速输入输出 —— 刷题必写这两句，否则大数据量会超时</span>
+ios::sync_with_stdio(false);
+cin.tie(0);
+
+<span class="c">// vector：变长数组，最常用</span>
+vector&lt;int&gt; v;
+v.push_back(1);
+v.size();
+sort(v.begin(), v.end());
+
+<span class="c">// pair：打包两个值，常配合 vector 用</span>
+pair&lt;int,int&gt; p = {1, 2};
+p.first;  p.second;
+
+<span class="c">// map：键值对，统计词频神器</span>
+map&lt;string,int&gt; cnt;
+cnt["apple"]++;
+<span class="k">for</span> (<span class="k">auto</span> &amp;kv : cnt) cout &lt;&lt; kv.first &lt;&lt; kv.second;
+
+<span class="c">// unordered_map：更快，但无序</span>
+unordered_map&lt;int,int&gt; mp;
+
+<span class="c">// set：自动去重 + 有序</span>
+set&lt;int&gt; s;
+s.insert(3);
+s.count(3);   <span class="c">// 返回 1 表示存在，0 表示不存在</span>
+
+<span class="c">// stack / queue</span>
+stack&lt;int&gt; st;  st.push(1); st.top(); st.pop();
+queue&lt;int&gt; q;   q.push(1); q.front(); q.pop();
+
+<span class="c">// priority_queue：默认大根堆</span>
+priority_queue&lt;int&gt; pq;
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap;  <span class="c">// 小根堆</span>
+
+<span class="c">// 二分：第一个大于等于 x 的位置</span>
+<span class="k">int</span> idx = lower_bound(a, a + n, x) - a;</pre>
+</div>
+
+<div class="card">
+  <h2>八个必踩的坑（提前避开能省几十小时）</h2>
+  <ul>
+    <li><b>int 溢出</b> —— 数字大就换 <code>long long</code>，乘法前先转类型。<code>int</code> 上限约 21 亿，求和很容易超过。</li>
+    <li><b>数组开小</b> —— 题目说 n ≤ 1000，你开 <code>a[1005]</code> 或 <code>a[1010]</code>，不要刚好开 1000。</li>
+    <li><b>cin/cout 慢</b> —— 忘写那两句加速，大数据量直接超时。或者改用 scanf/printf。</li>
+    <li><b>局部变量未初始化</b> —— 全局变量默认是 0，<b>局部变量是随机值</b>。累加器记得手动置 0。</li>
+    <li><b>getline 前有残留换行</b> —— 前面用过 <code>cin &gt;&gt;</code> 的话，先加一句 <code>cin.ignore()</code>。</li>
+    <li><b>浮点数别用 == 比较</b> —— 用 <code>fabs(a-b) &lt; 1e-6</code>。</li>
+    <li><b>死循环</b> —— 检查 while 条件里的变量到底有没有变化。</li>
+    <li><b>求最小值时初始值设小了</b> —— 要设成一个"足够大"的数，否则永远输出初始值。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>8 周结束后，你应该能做到</h2>
+  <ul>
+    <li>独立用 C++ 实现：排序、二分查找、DFS / BFS、01 背包</li>
+    <li>30 分钟内独立解出一道洛谷「普及-」难度的题</li>
+    <li>累计刷题量 60 道以上，有完整的错题本</li>
+    <li>这些能力直接对应：蓝桥杯省赛、大厂笔试、面试手撕代码环节</li>
+  </ul>
+  <div class="tip">如果中途卡住超过两周没有进展，先回头看第 5 周的递归和第 6 周的 STL——90% 的卡壳都出在这两处。</div>
+</div>
+
+</main>
+<script>
+const D = {d0:'入门', d1:'普及-', d2:'普及/提高-'};
+const WEEKS = [
+  {
+    n:0, title:'环境准备', days:'3 天',
+    goal:'能在这台电脑上编译运行 C++，并且能在洛谷提交通过。',
+    points:[
+      '确认 g++ 可用（你正在配的 MSYS2 ucrt64 就是它），命令行敲 g++ --version 能看到版本号',
+      'VSCode 装好 C/C++ 扩展，跑通一个 Hello World',
+      '注册洛谷账号，提交下面这道题并通过',
+      '学会看编译错误：从第一条 error 开始改，看行号和原因'
+    ],
+    tasks:[['P1001','A+B Problem','d0']],
+    check:'能自己独立完成"写代码 → 编译 → 运行 → 提交"这一整条链路，不需要问人。'
+  },
+  {
+    n:1, title:'语法基础闭环', days:'第 1 周',
+    goal:'把"输入 → 计算 → 输出"这条链路走通，不再卡在语法上。',
+    points:[
+      '变量与类型：<code>int</code>、<code>long long</code>、<code>double</code>、<code>char</code>、<code>bool</code>',
+      '输入输出：<code>cin &gt;&gt; x;</code> 与 <code>cout &lt;&lt; x &lt;&lt; endl;</code>',
+      '算术运算、整除与取余（<code>/</code> 和 <code>%</code>，整数除法会丢小数）',
+      '分支：<code>if / else if / else</code>、<code>switch</code>',
+      '浮点数保留小数：<code>printf("%.2f", x)</code> 或 <code>cout &lt;&lt; fixed &lt;&lt; setprecision(2)</code>'
+    ],
+    tasks:[
+      ['P5703','【深基2.例5】苹果采购','d0'],
+      ['P5704','【深基2.例6】字母转换','d0'],
+      ['P5705','【深基2.例7】数字反转','d0'],
+      ['P5706','【深基2.例8】再分肥宅水','d0'],
+      ['P5710','【深基3.例2】数的性质','d0'],
+      ['P5711','【深基3.例3】闰年判断','d0'],
+      ['P5715','【深基3.例8】三位数排序','d0'],
+      ['P5712','【深基3.例4】Apples','d0']
+    ],
+    check:'不查任何资料，独立写出「判断闰年」和「三位数排序」。写不出来就再练一周，不要往下走。'
+  },
+  {
+    n:2, title:'循环与枚举', days:'第 2 周',
+    goal:'能用循环处理「重复做 N 次」和「枚举所有可能」这两类问题。',
+    points:[
+      '<code>for</code>、<code>while</code>、<code>do-while</code>，以及 <code>break</code> / <code>continue</code>',
+      '循环嵌套：打印图形、二维遍历',
+      '累加、累乘、求最值（<b>最小值的初始值要设得足够大</b>，这是高频坑）',
+      '枚举思想：把所有可能试一遍，再挑出符合要求的',
+      '时间直觉：约 <code>1e8</code> 次简单运算 ≈ 1 秒，据此判断暴力枚举会不会超时'
+    ],
+    tasks:[
+      ['P5718','【深基4.例2】找最小值','d0'],
+      ['P5719','【深基4.例3】分类平均','d0'],
+      ['P5720','【深基4.例4】一尺之棰','d0'],
+      ['P5721','【深基4.例6】数字直角三角形','d0'],
+      ['P5722','【深基4.例11】数列求和','d0'],
+      ['P5724','【深基4.习5】求极差','d0'],
+      ['P5725','【深基4.习8】求三角形','d0'],
+      ['P5726','【深基4.习9】打分','d0'],
+      ['P5727','【深基5.例3】冰雹猜想','d0'],
+      ['P1046','陶陶摘苹果','d0']
+    ],
+    check:'能随手写出双层 for 打印三角形；求最小值时知道初始值不能设成 0。'
+  },
+  {
+    n:3, title:'数组', days:'第 3 周',
+    goal:'会存一批数据、遍历它们、并且能排序。',
+    points:[
+      '一维数组的声明与遍历：<code>int a[105];</code> —— <b>永远开大一点，防越界</b>',
+      '二维数组与矩阵遍历',
+      '排序：<code>sort(a, a + n);</code>，以及自定义比较函数',
+      '手写一遍冒泡排序（理解原理即可，实战一律用 sort）',
+      '进阶可选：前缀和（很多题的省时利器）'
+    ],
+    tasks:[
+      ['P1047','校门外的树','d1'],
+      ['P5728','【深基5.例5】旗鼓相当的对手','d0'],
+      ['P5729','【深基5.例7】工艺品制作','d0'],
+      ['P5731','【深基5.习6】蛇形方阵','d1'],
+      ['P5732','【深基5.习7】杨辉三角','d0'],
+      ['P1428','小鱼比可爱','d0'],
+      ['P1909','买铅笔','d1'],
+      ['P2911','[USACO08OCT] Bovine Bones G','d0']
+    ],
+    check:'能独立完成蛇形方阵。这题是数组下标的经典关卡，过了说明你对下标控制真的理解了。'
+  },
+  {
+    n:4, title:'字符串与 STL 入门', days:'第 4 周',
+    goal:'能处理文本，并开始用 STL 把效率提上来。',
+    points:[
+      '<code>string</code> 的常用操作：<code>length()</code>、<code>substr()</code>、<code>find()</code>、<code>+=</code>、下标访问',
+      '读入一整行：<code>getline(cin, s)</code>；<b>若前面用过 cin，必须先 cin.ignore()</b>',
+      '字符判断与转换：<code>isdigit</code>、<code>isalpha</code>、<code>toupper</code>、<code>tolower</code>',
+      '<b>STL 三件套</b>：<code>vector</code>、<code>sort</code>、<code>pair</code>',
+      '<code>vector&lt;int&gt; v; v.push_back(x); sort(v.begin(), v.end());</code>'
+    ],
+    tasks:[
+      ['P5733','【深基6.例1】自动修正','d0'],
+      ['P5734','【深基6.例6】文字处理软件','d0'],
+      ['P1307','数字反转','d0'],
+      ['P1308','统计单词数','d1'],
+      ['P1553','数字反转（升级版）','d1'],
+      ['P1055','ISBN 号码','d0'],
+      ['P1328','生活大爆炸版石头剪刀布','d1']
+    ],
+    check:'能处理"含空格的整行输入"，并且能用 vector 存不定长的数据。'
+  },
+  {
+    n:5, title:'函数、结构体与递归', days:'第 5 周',
+    goal:'把代码拆成函数，理解并能手写递归。',
+    points:[
+      '函数定义、参数、返回值；<b>引用传参</b> <code>int &amp;x</code>（能直接改到调用方的变量）',
+      '结构体 <code>struct</code> + 排序（结构体排序是刷题和面试的高频需求）',
+      '递归三要素：<b>终止条件、递推关系、每一步都向终止收敛</b>',
+      '递归转迭代的思路（有些题递归会爆栈）',
+      '函数内局部变量的作用域 —— 这是新手最常困惑的点'
+    ],
+    tasks:[
+      ['P5735','【深基7.例1】距离函数','d0'],
+      ['P5736','【深基7.例2】质数筛','d0'],
+      ['P5737','【深基7.例3】闰年展示','d0'],
+      ['P5738','【深基7.例4】歌唱比赛','d0'],
+      ['P5739','【深基7.例7】计算阶乘','d0'],
+      ['P5740','【深基7.例9】最厉害的学生','d1'],
+      ['P5742','【深基7.例11】评等级','d0'],
+      ['P5743','【深基7.习8】猴子吃桃','d0']
+    ],
+    check:'能用递归写出阶乘；能用 struct + sort 按多关键字排序。递归不熟就别进第 7 周。'
+  },
+  {
+    n:6, title:'STL 容器与二分', days:'第 6 周',
+    goal:'掌握刷题最常用的容器，写题效率会翻倍。',
+    points:[
+      '<code>map</code> / <code>unordered_map</code>：键值对，统计词频、记录映射关系',
+      '<code>set</code>：自动去重 + 保持有序',
+      '<code>stack</code> / <code>queue</code> / <code>priority_queue</code>：为第 7 周的搜索打基础',
+      '<code>lower_bound</code> / <code>upper_bound</code>：在有序数组中二分查找',
+      '遍历写法：<code>for (auto x : v)</code>'
+    ],
+    tasks:[
+      ['P1051','谁拿了最多奖学金','d1'],
+      ['P1093','奖学金','d1'],
+      ['P1068','分数线划定','d1'],
+      ['P1781','宇宙总统','d1'],
+      ['P2249','【深基13.例1】查找','d1'],
+      ['P1102','A-B 数对','d1'],
+      ['P1678','烦恼的高考志愿','d1']
+    ],
+    check:'能用 map 在 10 行以内完成词频统计；能用 lower_bound 在有序数组里查数。'
+  },
+  {
+    n:7, title:'搜索（DFS / BFS）', days:'第 7 周',
+    goal:'这是从「会写代码」到「会解算法题」的分水岭，也是整个计划最关键的一周。',
+    points:[
+      'DFS 模板：递归 + 标记访问 + 回溯（撤销标记）',
+      '<code>visited</code> 数组的作用与位置',
+      '剪枝：提前判断出无解的分支并退出，避免超时',
+      'BFS 模板：队列 + 步数记录',
+      '选择原则：<b>DFS 求"所有方案"，BFS 求"最短步数"</b>'
+    ],
+    tasks:[
+      ['P1706','全排列问题','d1'],
+      ['P1157','组合的输出','d1'],
+      ['P1036','[NOIP2002 普及组] 选数','d1'],
+      ['P2404','自然数的拆分问题','d1'],
+      ['P1605','迷宫','d1'],
+      ['P1443','马的遍历','d1'],
+      ['P1596','[USACO10OCT] Lake Counting S','d1'],
+      ['P1219','[USACO1.5] 八皇后 Checker Challenge','d2']
+    ],
+    check:'能<b>不看任何资料</b>默写出全排列的 DFS 模板。做到这一条，你的刷题能力就真正跨过门槛了。'
+  },
+  {
+    n:8, title:'动态规划入门', days:'第 8 周',
+    goal:'理解 DP 的思考方式，掌握最基础的背包问题。',
+    points:[
+      'DP 的本质：<b>把算过的答案记下来，避免重复计算</b>（先想递归为什么慢，就懂了 DP）',
+      '三步走：定义状态 → 写转移方程 → 确定边界条件',
+      '线性 DP：数字三角形、最大子段和',
+      '01 背包，以及一维滚动数组优化',
+      '完全背包与 01 背包的唯一区别：<b>容量遍历方向相反</b>'
+    ],
+    tasks:[
+      ['P1216','[IOI1994] 数字三角形','d1'],
+      ['P1115','最大子段和','d1'],
+      ['P1002','[NOIP2002 普及组] 过河卒','d1'],
+      ['P1048','[NOIP2005 普及组] 采药','d2'],
+      ['P1616','疯狂的采药','d2'],
+      ['P1049','[NOIP2001 普及组] 装箱问题','d2']
+    ],
+    check:'能不看题解写出 01 背包的一维优化版，并且<b>说清楚为什么容量必须倒序遍历</b>。说不清就是没懂。'
+  }
+];
+
+const KEY = 'cpp-plan-8w-v1';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) { state = {}; }
+
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+const wrap = document.getElementById('weeks');
+let html = '';
+WEEKS.forEach(w => {
+  const items = w.tasks.map(t => {
+    const id = 'w' + w.n + '-' + t[0];
+    const ck = state[id] ? ' checked' : '';
+    return '<label class="pitem"><input type="checkbox" data-id="' + id + '"' + ck + '>' +
+      '<a class="pid" href="https://www.luogu.com.cn/problem/' + t[0] + '" target="_blank" rel="noopener">' + t[0] + '</a>' +
+      '<span class="pname">' + t[1].replace(/</g,'&lt;') + '</span>' +
+      '<span class="diff ' + t[2] + '">' + D[t[2]] + '</span></label>';
+  }).join('');
+  html += '<section class="week" data-w="' + w.n + '">' +
+    '<div class="whead"><div class="wtitle">' +
+      '<span class="wnum">' + (w.n === 0 ? '准备' : ('第 ' + w.n + ' 周')) + '</span>' +
+      '<h2>' + w.title + '</h2>' +
+      '<span class="wprog" data-prog="' + w.n + '"></span>' +
+    '</div><div class="goal">' + w.goal + '</div></div>' +
+    '<div class="wbody">' +
+      '<p class="lbl">本周要掌握</p><ul class="pts"><li>' + w.points.join('</li><li>') + '</li></ul>' +
+      '<p class="lbl">练习题（点题号可跳转洛谷）</p><div class="plist">' + items + '</div>' +
+      '<div class="check"><b>本周验收：</b>' + w.check + '</div>' +
+    '</div></section>';
+});
+wrap.innerHTML = html;
+
+const boxes = Array.from(document.querySelectorAll('.pitem input'));
+
+function refresh(){
+  let done = 0;
+  boxes.forEach(b => { if (b.checked) done++; });
+  const total = boxes.length;
+  document.getElementById('fill').style.width = total ? (done / total * 100) + '%' : '0%';
+  document.getElementById('stat').textContent = done + ' / ' + total + ' 题';
+  WEEKS.forEach(w => {
+    const ids = w.tasks.map(t => 'w' + w.n + '-' + t[0]);
+    const d = ids.filter(i => state[i]).length;
+    const el = document.querySelector('[data-prog="' + w.n + '"]');
+    if (el) el.textContent = d + ' / ' + ids.length;
+  });
+}
+
+boxes.forEach(b => {
+  b.addEventListener('change', () => {
+    if (b.checked) state[b.dataset.id] = 1; else delete state[b.dataset.id];
+    save(); refresh();
+  });
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  if (!confirm('确定要清空全部刷题进度吗？此操作不可撤销。')) return;
+  state = {}; save();
+  boxes.forEach(b => { b.checked = false; });
+  refresh();
+});
+
+refresh();
+</script>
+</body>
+</html>

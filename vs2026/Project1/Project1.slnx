@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Lab2_char/Lab2_char.vcxproj" Id="c41e1036-d1c7-4c4f-a366-6ccda5d8a70c" />
+  <Project Path="Lab_const/Lab_const.vcxproj" Id="aed44fc2-7316-4fcc-8a40-40a4c7216aaf" />
+  <Project Path="Lab_enum.cpp/Lab_enum.cpp.vcxproj" Id="79d567cb-6aaf-440a-b6af-9cb97ddb8be9" />
+  <Project Path="Project1/Project1.vcxproj" Id="11773fd3-948b-4ebc-8c7c-0f6e8d50a22b" />
+  <Project Path="Project1/Project1_LongLong.vcxproj" Id="c1b25c0a-130b-4bf1-a239-16a6e54d42a9" />
+</Solution>

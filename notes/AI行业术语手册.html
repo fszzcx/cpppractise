@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 行业术语手册</title>
+<style>
+  :root{
+    --bg:#1b1b1e; --surface:#242428; --surface2:#2c2c31;
+    --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+    --tx:#E9E7E2; --tx2:#A9A6A1; --tx3:#7A7873;
+    --accent:#5DCAA5; --accent-dim:#1D9E75; --accent-bg:rgba(29,158,117,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--tx);
+    font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif;
+    font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  header{
+    position:sticky; top:0; z-index:10; background:rgba(27,27,30,.92);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+    padding:18px 28px 14px;
+  }
+  .hrow{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; max-width:1400px; margin:0 auto}
+  h1{font-size:17px; font-weight:500; margin:0; letter-spacing:.3px}
+  .sub{font-size:12px; color:var(--tx3)}
+  .searchwrap{max-width:1400px; margin:12px auto 0; position:relative}
+  #q{
+    width:100%; padding:10px 40px 10px 14px; font-size:14px;
+    background:var(--surface); border:1px solid var(--line2);
+    border-radius:8px; color:var(--tx); outline:none;
+    font-family:inherit; transition:border-color .15s;
+  }
+  #q:focus{border-color:var(--accent-dim)}
+  #q::placeholder{color:var(--tx3)}
+  .cnt{position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--tx3); pointer-events:none}
+  .layout{display:grid; grid-template-columns:210px minmax(0,1fr); gap:28px; max-width:1400px; margin:0 auto; padding:24px 28px 90px}
+  nav{position:sticky; top:130px; align-self:start; max-height:calc(100vh - 160px); overflow-y:auto}
+  nav button{
+    display:flex; justify-content:space-between; align-items:center; gap:8px;
+    width:100%; text-align:left; padding:7px 10px; margin-bottom:2px;
+    background:transparent; border:0; border-radius:6px; cursor:pointer;
+    color:var(--tx2); font-size:13px; font-family:inherit; transition:all .12s;
+  }
+  nav button:hover{background:var(--surface2); color:var(--tx)}
+  nav button.on{background:var(--accent-bg); color:var(--accent)}
+  nav button span{font-size:11px; color:var(--tx3)}
+  nav button.on span{color:var(--accent-dim)}
+  .cat{margin-bottom:40px; scroll-margin-top:150px}
+  .cat h2{font-size:15px; font-weight:500; margin:0 0 4px; color:var(--tx)}
+  .cat .meta{font-size:12px; color:var(--tx3); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--line)}
+  .term{padding:13px 16px; margin-bottom:8px; background:var(--surface); border:1px solid var(--line); border-radius:9px; transition:border-color .15s}
+  .term:hover{border-color:var(--line2)}
+  .term .n{font-size:14px; font-weight:500; color:var(--accent); margin-bottom:4px}
+  .term .n em{font-style:normal;color:var(--tx3);font-weight:400;font-size:12px;margin-left:6px}
+  .term .d{color:var(--tx2); font-size:13.5px}
+  .term mark{background:rgba(93,202,165,.25); color:var(--tx); border-radius:2px; padding:0 2px}
+  .empty{text-align:center; padding:70px 20px; color:var(--tx3); font-size:14px}
+  .tip{font-size:12px; color:var(--tx3); margin-bottom:22px; padding:10px 14px; background:var(--surface); border-radius:8px; border-left:2px solid var(--accent-dim)}
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr; gap:0; padding:18px 16px 70px}
+    nav{position:static; display:flex; flex-wrap:wrap; gap:6px; max-height:none; margin-bottom:22px; overflow:visible}
+    nav button{width:auto; font-size:12px}
+    nav button span{display:none}
+    header{padding:14px 16px 12px}
+    .cat{margin-bottom:30px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>AI 行业术语手册</h1>
+    <div class="sub">按领域分组 · 可搜索 · 面向计算机专业入门者</div>
+  </div>
+  <div class="searchwrap">
+    <input id="q" type="text" placeholder="搜索术语，比如 SQL、Agent、Harness、八股文……" autocomplete="off">
+    <span class="cnt" id="cnt"></span>
+  </div>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+<script>
+const DATA = [
+{
+  cat:'编程语言与运行机制',
+  desc:'写代码这件事本身。先把这一层的地基踩实，后面学什么都快。',
+  terms:[
+    ['C 语言','1972 年诞生的过程式语言，最贴近内存和硬件，语法精简、几乎没有现成的工具箱，什么轮子都得自己造。它的价值不在于“用来做项目”，而在于帮你建立对内存、指针、编译过程的底层直觉——大学的 C 语言课就是在干这件事。'],
+    ['C++','在 C 的基础上加了面向对象、模板、STL 等大量特性，既保留 C 的性能又提供了高级抽象。游戏引擎、数据库、操作系统、AI 推理底层大量使用。也是刷题和算法竞赛的主力语言，但日常只用到它的一个很小的子集。'],
+    ['Python','语法最接近自然语言，第三方库极其丰富。AI、数据、自动化、脚本的首选语言。缺点是解释执行、速度慢，但在 AI 领域这不构成问题，因为重活都由底层的 C/C++ 库完成了。'],
+    ['Java','企业级后端的主流语言，生态成熟稳定，国内大厂后端大量使用。核心卖点是“一次编写，到处运行”——只要装了 JVM（Java 虚拟机）就能跑。'],
+    ['JavaScript','浏览器唯一原生的语言，网页的所有交互都靠它。后来出现的 Node.js 让它也能写服务端代码。'],
+    ['TypeScript','JavaScript 的加强版，增加了类型系统。大项目用它可以在写代码阶段就发现类型错误，而不是等运行时才崩。现代前端的事实标准。'],
+    ['Go','谷歌出品，语法简单、并发能力强、编译快，是云原生和后端基础设施的热门选择。Docker、Kubernetes 都是用 Go 写的。'],
+    ['Rust','以内存安全和高性能著称，不依赖垃圾回收就能保证安全，因此学习曲线极陡。正在进入操作系统、数据库、AI 基础设施等底层领域。'],
+    ['编译型语言','需要先用编译器把源码翻译成机器可执行文件的语言，如 C/C++/Go/Rust。特点是运行速度快，但改一行代码要重新编译。'],
+    ['解释型语言','不需要提前编译，运行时由解释器逐行翻译执行，如 Python/JavaScript。特点是开发效率高、跨平台方便，但运行速度慢。'],
+    ['静态类型 / 动态类型','静态类型（C++/Java/TypeScript）在编译阶段就检查变量类型；动态类型（Python/JavaScript）到运行时才知道类型。前者更安全、更适合大项目，后者更灵活、写起来更快。'],
+    ['强类型 / 弱类型','强类型不允许隐式类型转换（Python 里字符串加数字会直接报错），弱类型允许（JavaScript 里 "1" + 1 会得到 "11"）。弱类型更容易出现隐蔽的 bug。'],
+    ['标准库 / STL','语言自带的工具箱。C++ 的 STL 提供了 vector、map、sort 等现成组件，是 C++ 刷题效率的关键所在——没有 STL，写个哈希表要手写一百行。'],
+    ['第三方库','别人写好、可以直接拿来用的代码包，如 Python 的 numpy、pandas。会用现成的库是工程能力的重要部分。'],
+    ['包管理器','自动下载和安装第三方库的工具。Python 用 pip / conda，Node 用 npm / pnpm，C++ 用 vcpkg / Conan。'],
+    ['虚拟环境','给每个项目分配独立的依赖空间，避免“这个项目要 numpy 1.0、那个项目要 2.0”的版本冲突。Python 里用 venv 或 conda 创建。'],
+    ['编译器','把源代码翻译成机器码的程序。C/C++ 常用 GCC、Clang、MSVC。你正在配置的 MSYS2 里的 gcc 就是编译器。'],
+    ['链接器','把多个编译好的目标文件拼装成一个可执行程序。报错信息里出现 "undefined reference" 基本就是链接阶段的问题。'],
+    ['调试器 / GDB','让程序暂停在指定位置、查看变量当前值的工具。GDB 是 C/C++ 的标准调试器，在 VSCode 里可以图形化地使用它。'],
+    ['断点（Breakpoint）','调试时让程序“停在这里”的标记。排错时第一个该做的动作就是打断点，而不是到处加打印语句。'],
+    ['IDE（集成开发环境）','把代码编辑、编译、调试、代码提示集成在一起的软件，如 Visual Studio、CLion、PyCharm。功能全但笨重。'],
+    ['代码编辑器','比 IDE 更轻，靠插件扩展能力，如 VSCode、Vim、Sublime。你现在用的 VSCode 就是这一类。']
+  ]
+},
+{
+  cat:'Web 与网络基础',
+  desc:'AI 应用本质上是 Web 应用。这一层不懂，接口调不通、报错看不懂。',
+  terms:[
+    ['HTML','超文本标记语言，网页的骨架。它只描述结构——这是标题、那是段落、这里放个按钮，不负责样式和行为。写好的 .html 文件双击就能用浏览器打开。入门门槛极低，一两天就能看懂。'],
+    ['CSS','层叠样式表，网页的皮肤。控制颜色、字体、间距、布局和动画。HTML 加 CSS 就能做出一个静态网页。'],
+    ['DOM（文档对象模型）','浏览器把 HTML 解析成的一棵节点树，JavaScript 通过操作这棵树来改变页面内容。可以说前端开发的核心就是操作 DOM。'],
+    ['前端 / 后端 / 全栈','前端是用户看得见的部分（页面和交互）；后端是服务器上的业务逻辑和数据处理；全栈是两边都能做。'],
+    ['HTTP','浏览器和服务器之间通信的协议。你打开任何网页，背后都是一次 HTTP 请求与响应。'],
+    ['HTTPS','HTTP 的加密版本，防止数据在传输过程中被窃听或篡改。现在几乎所有正规网站都用它。'],
+    ['请求方法（GET / POST / PUT / DELETE）','GET 用于获取数据（参数放在 URL 里），POST 用于提交数据（参数放在请求体里），PUT 用于更新，DELETE 用于删除。这四个方法构成了 REST API 的基础。'],
+    ['状态码','服务器对请求的回应代码。200 表示成功，404 表示资源不存在，401 表示未登录，403 表示没权限，500 表示服务器内部出错。看到报错先看状态码。'],
+    ['API（应用程序编程接口）','通俗说就是“别人提供的、你可以调用的功能入口”。你不需要知道它内部怎么实现，只要按约定传参数、拿结果。调用大模型也是调用 API。'],
+    ['SDK（软件开发工具包）','比 API 更重的一套东西，通常包含开发工具、文档、示例代码，帮你更方便地接入某个平台或硬件。'],
+    ['RESTful API','一种设计 API 的规范和风格，核心思想是“用 URL 表示资源、用 HTTP 方法表示操作”。是目前最主流的 API 形式。'],
+    ['GraphQL','一种 API 查询语言，允许客户端精确指定“我要哪些字段”，避免服务端返回一大堆用不上的数据。由 Facebook 提出。'],
+    ['JSON','一种数据格式，结构上很像 Python 的字典。目前前后端交换数据的事实标准。你调用大模型 API 时，请求体和响应基本都是 JSON。'],
+    ['XML','更古老的数据格式，用标签包裹内容（形式类似 HTML）。现在主要用于配置文件和遗留系统。'],
+    ['YAML','一种对人类友好的配置文件格式，用缩进表示层级关系。Docker Compose、Kubernetes、CI 配置大量使用它。'],
+    ['跨域（CORS）','浏览器出于安全考虑，默认禁止网页向“不同源”的服务器发起请求。跨域报错是前端最常见的坑之一。'],
+    ['Cookie / Session / Token','三种让服务器“记住你是谁”的机制。Cookie 存在浏览器端，Session 存在服务器端，Token（如 JWT）是自带信息、服务器不用存储的令牌。现代 API 多用 Token。'],
+    ['WebSocket','全双工通信协议。普通 HTTP 是“你问我答”，WebSocket 在建立连接后服务器可以主动推送消息。聊天应用、实时协作用它。'],
+    ['SSE（Server-Sent Events）','服务器单向持续推送数据的协议。AI 聊天时那种“一个字一个字往外蹦”的流式效果，就是用 SSE 实现的。'],
+    ['DNS','域名系统，把网址（如 baidu.com）翻译成服务器 IP 地址的“电话簿”。'],
+    ['CDN（内容分发网络）','把静态资源缓存到各地节点上，用户就近获取，从而加快访问速度。'],
+    ['Nginx','最流行的 Web 服务器和反向代理软件，负责接收请求、转发给后端程序、处理静态文件。部署 AI 应用几乎躲不开它。'],
+    ['反向代理','用户以为在直接访问服务器，实际上中间隔了一层代理在转发。用途包括负载均衡、SSL 加密、限流和隐藏真实服务地址。'],
+    ['负载均衡','把大量请求分散到多台服务器上处理，避免单台机器被压垮。'],
+    ['端口','同一台机器上用数字区分不同服务的编号。80 是 HTTP，443 是 HTTPS，22 是 SSH，3306 是 MySQL，5173 常是前端开发服务器。']
+  ]
+},
+{
+  cat:'数据库与数据',
+  desc:'AI 应用的底座。RAG、知识库、数据分析，全都建立在数据能力之上。',
+  terms:[
+    ['数据库（Database）','有组织地存储和管理数据的系统。相比直接用文件存数据，它提供了高效查询、并发控制、事务、权限管理等一整套能力。'],
+    ['DBMS（数据库管理系统）','用来管理数据库的软件，如 MySQL、PostgreSQL、SQLite。'],
+    ['SQL（结构化查询语言）','用来和关系型数据库对话的语言，全称 Structured Query Language。它本身不是编程语言，而是一种“声明式”语言——你只描述“我要什么数据”，不描述“怎么一步步取”。这是数据方向最必须的技能，没有之一，同时也是后端、数据分析、AI 工程岗的通用基本功。入门只学 SELECT / WHERE / JOIN / GROUP BY 就能干活。'],
+    ['关系型数据库','用“表”（行 + 列）来组织数据的数据库，表之间通过键建立关联。代表是 MySQL、PostgreSQL、Oracle。适合结构清晰、需要强一致性的场景。'],
+    ['非关系型数据库（NoSQL）','不采用固定表结构存储的数据库。包括文档型（MongoDB）、键值型（Redis）、图数据库（Neo4j）等。适合数据结构灵活或并发量极高的场景。'],
+    ['表 / 行 / 列','表约等于 Excel 的一个工作表，一行是一条记录，一列是一个字段。'],
+    ['主键（Primary Key）','唯一标识每一行数据的字段，比如学号。不能重复、不能为空。'],
+    ['外键（Foreign Key）','指向另一张表主键的字段，用来建立两张表之间的关联关系。'],
+    ['索引（Index）','相当于书的目录，让数据库不必全表扫描就能快速定位数据。索引能极大提升查询速度，但会让写入变慢并占用额外空间，所以不是越多越好。'],
+    ['JOIN（连接）','把多张表按关联字段拼成一张大表。INNER JOIN 取两表交集，LEFT JOIN 保留左表全部记录。面试的高频考点。'],
+    ['GROUP BY / 聚合函数','把数据分组后做统计。COUNT() 计数、SUM() 求和、AVG() 求平均、MAX/MIN 求极值。所有报表类需求都靠它。'],
+    ['事务（Transaction）','一组“要么全部成功、要么全部失败”的操作。典型场景是银行转账——不能出现扣了钱却没到账的情况。它的四个特性简称 ACID。'],
+    ['ORM（对象关系映射）','让你用编程语言里的对象来操作数据库，不用手写 SQL。如 Python 的 SQLAlchemy、Django ORM。开发效率高，但复杂查询仍然要写原生 SQL。'],
+    ['Redis','基于内存的数据库，读写速度极快。主要用途是缓存、计数器、排行榜、消息队列。'],
+    ['缓存（Cache）','把常用数据放在更快的存储介质里（通常是内存），避免每次都去查慢速来源。这是提升系统性能最有效的手段。'],
+    ['向量数据库','专门存储和检索“向量”的数据库，如 Milvus、Chroma、FAISS、Pinecone。它是 RAG（检索增强生成）的技术底座——把文本转成向量存进去，再按语义相似度检索出最相关的内容。'],
+    ['Embedding（嵌入 / 向量化）','把文字、图片等内容转换成一组数字（向量），使语义相近的内容在数学空间里距离也更近。比如“苹果”和“iPhone”的向量距离，会比“苹果”和“汽车”近得多。'],
+    ['数据仓库 / 数据湖','数据仓库存经过清洗、结构化的数据，主要用于分析；数据湖存原始的、各种格式的数据，更灵活但更“脏”。'],
+    ['ETL','抽取（Extract）、转换（Transform）、加载（Load）的缩写，指把数据从各个来源收集、清洗、汇总到统一位置的标准流程。'],
+    ['数据清洗','处理缺失值、重复值、异常值和格式不一致等“脏数据”。实际工作中这一步往往占掉数据分析 60% 以上的时间。'],
+    ['分块（Chunking）','RAG 流程中把长文档切成大小合适片段的过程。切得好不好，直接决定检索效果——这是最容易被低估的环节。'],
+    ['召回 / 重排（Retrieval / Rerank）','召回是先用向量检索粗筛出一批候选片段；重排是用更精细的模型对候选做二次排序。两阶段组合是工业界标配。']
+  ]
+},
+{
+  cat:'工程协作与运维',
+  desc:'把代码变成产品的那套流程。双非学生靠项目逆袭，靠的就是这一层。',
+  terms:[
+    ['Git','分布式版本控制系统，记录代码的每一次修改，让你能回退、对比、多人协作。这是程序员的必修课，没有例外。'],
+    ['GitHub / GitLab / Gitee','托管 Git 仓库的网站。GitHub 是全球最大的开源社区，你的个人主页就是一份最硬的简历。'],
+    ['仓库（Repository）','一个项目的代码连同完整的历史记录，简称 repo。'],
+    ['提交（Commit）','一次代码修改的快照，附带一段说明信息。写得清楚的 commit message 是专业度的直接体现。'],
+    ['分支（Branch）','从主线分出来的独立开发线，让你在不影响主代码的前提下开发新功能。'],
+    ['合并（Merge）','把某个分支上的改动合并回主分支。'],
+    ['PR / MR（Pull Request / Merge Request）','请求把自己的分支合并进主分支。其他人会在 PR 里对你的代码逐行审查（Code Review），这是团队协作的核心流程。'],
+    ['冲突（Conflict）','两个人修改了同一行代码，Git 无法自动判断该保留哪个版本，需要人工解决。'],
+    ['Fork / Clone','Fork 是把别人的仓库复制一份到你自己的账号下（常用于给开源项目做贡献）；Clone 是把仓库下载到本地。'],
+    ['开源协议','规定别人能如何使用你代码的法律条款。MIT 和 Apache 2.0 最宽松，允许商用和闭源，只需保留版权声明；GPL 有“传染性”，你的项目也必须开源；BSD 类似 MIT。选错协议会有法律风险。'],
+    ['CI / CD（持续集成 / 持续交付）','代码提交后自动跑测试、自动构建、自动部署的一整套流程。常用工具是 GitHub Actions、Jenkins。'],
+    ['Docker','容器技术。把应用和它依赖的整个环境打包成一个“镜像”，在任何机器上都能以完全相同的方式运行，彻底解决了“在我电脑上明明是好的”这个经典问题。'],
+    ['容器 vs 虚拟机','虚拟机要模拟整台电脑（包括操作系统），笨重且启动慢；容器只隔离进程、共享宿主机内核，轻量得多。'],
+    ['Kubernetes（K8s）','容器编排系统。当你有成百上千个容器要管理时，用它来调度、扩缩容、故障自愈。'],
+    ['镜像（Image）/ 容器（Container）','镜像是只读的“安装包”模板，容器是由镜像启动的“运行中实例”。'],
+    ['微服务 / 单体架构','单体是把所有功能写在一个程序里，简单直接；微服务是拆成一堆独立部署的小服务，通过 API 通信，灵活但运维复杂度高。'],
+    ['开发 / 测试 / 生产环境','三套互相隔离的运行环境。开发环境随便改，测试环境跑测试，生产环境是真实用户在用——绝对不能在测试环境里直接改生产数据。'],
+    ['环境变量','存在操作系统里的配置值，比如 API Key、数据库密码。作用是让程序不必把敏感信息硬编码在代码里。'],
+    ['API Key','调用第三方 API 的身份凭证。绝对不能提交到 GitHub、也不能写在前端代码里，泄露会被人盗刷。手机号、云服务、模型调用都靠它。'],
+    ['日志（Log）','程序运行过程的记录。线上出问题时，第一件事永远是看日志。'],
+    ['监控 / 告警','实时观察服务器的 CPU、内存、错误率等指标，异常时自动通知。常用工具是 Prometheus 加 Grafana。'],
+    ['单元测试 / 集成测试','单元测试验证单个函数是否正确；集成测试验证多个模块配合起来是否正常。'],
+    ['重构（Refactor）','在不改变外部功能的前提下改善代码结构，让它更好读、更好维护。'],
+    ['技术债','为了赶进度而写下的“凑合能用”的代码，未来需要花更多时间来偿还。'],
+    ['部署 / 上线','把写好的代码放到服务器上，让真实用户能够访问。'],
+    ['灰度发布 / 金丝雀发布','先让 1% 的用户使用新版本，观察没问题后再逐步扩大到全量。目的是把出事故时的影响面压到最小。'],
+    ['压测 / QPS / TPS','压测是用工具模拟海量请求来考验系统的承受能力；QPS 是每秒查询数；TPS 是每秒事务数。这是衡量系统性能的核心指标。'],
+    ['高并发','同一时间涌入海量请求。需要用缓存、负载均衡、异步处理、消息队列等手段来支撑。'],
+    ['消息队列（MQ）','让不同服务之间异步通信的中间件，如 Kafka、RabbitMQ。三大作用是削峰、解耦、异步。'],
+    ['敏捷开发 / Sprint','把大目标拆成 1 到 4 周的小周期（Sprint），每个周期交付一个可用版本，快速迭代。'],
+    ['Harness（执行框架 / 驱动层）','工程术语，指“把某个能力的执行流程封装起来、供你调用的一整套基础设施”。测试框架叫 test harness，负责启动程序、运行用例、收集结果。在 AI 领域，Agent Harness 特指驱动大模型循环干活的那套运行时——它负责把用户输入、系统提示词、工具调用、多轮循环、结果解析这些环节串起来，并处理超时、异常、循环上限。一句话理解：模型是发动机，Harness 是底盘和传动系统。所以当有人说“我们自研了 Agent Harness”，意思是他自己写了一套调度大模型干活的框架，而不是只用现成库。'],
+    ['Sandbox（沙箱）','隔离的运行环境，让不受信任的代码可以安全执行，即使出错也影响不到主系统。AI Agent 要执行代码时必须放进沙箱。'],
+    ['Mock','测试时用假对象替代真实依赖（比如不真的去调支付接口），让测试跑得更快、更稳定。'],
+    ['批处理 / 实时处理','批处理是攒一批数据统一处理（如每天凌晨跑一次）；实时处理是来一条处理一条。'],
+    ['反代 / 正向代理','正向代理代表客户端去访问外部（企业内网出口）；反向代理代表服务器接收外部请求（Nginx 做的事）。']
+  ]
+},
+{
+  cat:'人工智能与机器学习',
+  desc:'AI 的技术主干。不需要全懂，但要能听懂别人在说什么。',
+  terms:[
+    ['人工智能（AI）','最大的一个圈，泛指一切让机器表现出智能行为的技术。'],
+    ['机器学习（ML）','AI 的核心分支。核心思想是不再由人写规则，而是让程序从大量数据中自己“学”出规律。'],
+    ['深度学习（DL）','机器学习的一个分支，用多层神经网络来学习。它是当前这轮 AI 浪潮的技术基础。'],
+    ['三者的关系','AI 包含机器学习，机器学习包含深度学习，深度学习包含大模型。一层套一层，越往里越具体。'],
+    ['神经网络','受大脑神经元启发的计算结构，由大量“节点”分层连接构成，通过不断调整连接强度来学习规律。'],
+    ['参数 / 权重','神经网络内部可调的数值，训练的过程就是不断调整它们。“7B 模型”里的 7B，指的就是 70 亿个参数。'],
+    ['训练（Training）/ 推理（Inference）','训练是让模型从数据中学习，极其消耗算力；推理是用训练好的模型回答新问题。用户日常使用的永远是推理。'],
+    ['损失函数（Loss）','衡量“模型预测结果和正确答案差多少”的函数。训练的目标就是让这个值越来越小。'],
+    ['梯度下降 / 反向传播','训练的核心算法。反向传播计算出每个参数应该往哪个方向调，梯度下降按这个方向小步调整。这个过程要反复循环几百万次。'],
+    ['学习率（Learning Rate）','每次参数调整的步长。太大容易震荡不收敛，太小学得极慢。是调参中最关键的参数之一。'],
+    ['Epoch / Batch / Batch Size','把全部训练数据过完一遍叫一个 Epoch；数据量太大不能一次喂进去，就切成小批（Batch）分批喂；每个 Batch 的大小就是 Batch Size。'],
+    ['过拟合 / 欠拟合','过拟合是模型“死记硬背”了训练数据，遇到新数据就表现拉胯；欠拟合是根本没学到规律。'],
+    ['训练集 / 验证集 / 测试集','训练集用于训练；验证集用于调整超参数；测试集只在最后用一次，用来检验真实水平。混用会导致结果虚高。'],
+    ['特征 / 特征工程','特征是描述数据的属性（预测房价时的面积、楼层、地段）；特征工程是人工构造和筛选有效特征。在传统机器学习中，这一步常常比选算法更重要。'],
+    ['超参数','需要人来设定、而不是模型自己学出来的参数，比如学习率、网络层数、batch size。'],
+    ['监督 / 无监督 / 强化学习','监督学习有标注答案（给图片＋标签）；无监督学习没有标签，让模型自己找结构（如聚类）；强化学习通过“试错＋奖励”来学习（如 AlphaGo）。'],
+    ['Transformer','2017 年提出的神经网络架构，是所有现代大模型的地基。核心创新是注意力机制。'],
+    ['注意力机制（Attention）','让模型在处理某个词时，能够“关注”到句子中其他相关的词，从而理解上下文关系。这是大模型能理解长文本的关键。'],
+    ['Token / Tokenizer','Token 是模型处理文本的最小单位，Tokenizer 负责把文字切成 Token。英文一个单词大致 1 到 2 个 Token，中文一个字大致 1 到 2 个 Token。API 计费和上下文长度都按 Token 计算。'],
+    ['上下文窗口（Context Window）','模型一次能“看到”的最大 Token 数，超出就会遗忘或直接报错。从早期的 4K 发展到现在的百万级。'],
+    ['大语言模型（LLM）','参数量巨大、在海量文本上训练出来的语言模型，如 GPT、Claude、Gemini、DeepSeek、Qwen。'],
+    ['Prompt（提示词）','你给模型的输入。Prompt Engineering（提示工程）就是设计输入以得到更好输出的技术。'],
+    ['思维链（CoT）','让模型“一步一步想”，先输出推理过程再给结论。对数学、逻辑类复杂任务能显著提升准确率。'],
+    ['幻觉（Hallucination）','模型一本正经地编造不存在的事实。这是大模型的固有缺陷，RAG 和工具调用是缓解它的主要手段。'],
+    ['Temperature / Top-p','控制输出随机性的参数。温度接近 0 时输出稳定保守，适合代码和事实问答；温度调高输出更多样，适合创意写作。'],
+    ['预训练（Pre-training）','在海量通用文本上训练出基础模型，成本极高，动辄千万美元级别。普通人和小公司不可能做这件事。'],
+    ['微调（Fine-tuning）','在预训练模型的基础上，用特定领域的小数据集继续训练，让它更擅长某类任务。'],
+    ['LoRA / QLoRA','一种低成本微调技术。不修改原模型的全部参数，只训练一小部分“补丁”权重，显存需求大幅降低。个人和小团队做微调基本都用它。'],
+    ['对齐（Alignment）/ RLHF / DPO','让模型的输出符合人类偏好和价值观。RLHF 是“基于人类反馈的强化学习”，DPO 是更简单直接的替代方案。'],
+    ['蒸馏 / 量化 / 剪枝','三种“把模型变小变快”的技术。量化最常用（把 FP16 压到 INT4），能让模型在消费级显卡甚至手机上跑起来。'],
+    ['MoE（混合专家）','一种模型架构，内部有多个“专家”子网络，每次推理只激活其中一小部分。好处是参数总量很大但推理成本相对低。'],
+    ['多模态（Multimodal）','能同时处理文字、图片、音频、视频的模型。GPT-4o、Gemini 都是多模态模型。'],
+    ['TTS / ASR / OCR','TTS 是文本转语音；ASR 是语音转文本（语音识别）；OCR 是从图片里识别文字。三个最常见的 AI 能力封装。'],
+    ['开源模型 / 闭源模型','开源模型的权重可以下载、自己部署（Llama、Qwen、DeepSeek）；闭源模型只能通过 API 调用（GPT、Claude、Gemini）。'],
+    ['Hugging Face','AI 界的 GitHub，全球最大的开源模型和数据集社区。入门 AI 一定要逛。'],
+    ['PyTorch / TensorFlow','两大深度学习框架。目前 PyTorch 在研究和工业界都占主流地位。'],
+    ['GPU / CUDA / 显存','GPU 是训练和推理的主力硬件，因为它并行计算能力极强；CUDA 是 NVIDIA 的 GPU 编程平台；显存大小直接决定你能跑多大的模型。'],
+    ['AI Infra（AI 基础设施）','负责让模型高效跑起来的一整套技术：推理加速、分布式训练、显存优化、算子优化。常见工具是 vLLM、TensorRT。岗位门槛是扎实的 C++ 和系统能力。'],
+    ['评测（Benchmark）','用标准题库衡量模型能力的测试，如 MMLU、HumanEval。看榜单时要留神，存在针对性训练和刷榜的情况。'],
+    ['AI 味 / Slop','指 AI 生成的低质量、套话连篇的内容。现在“去除 AI 味”本身就是一类真实需求。'],
+    ['Vibe Coding','用自然语言指挥 AI 写代码、自己不细看具体实现的方式。适合快速做原型验证想法，但不适合需要长期维护的工程。']
+  ]
+},
+{
+  cat:'大模型应用与 Agent',
+  desc:'当前对本科最友好、需求增长最快的方向。这一节请重点看。',
+  terms:[
+    ['LLM 应用 / AI 应用','基于大模型能力构建的产品。与传统软件最大的区别在于：核心逻辑由模型生成，而不是程序员事先写死。'],
+    ['API 调用','通过 HTTP 请求把提示词发给模型服务商，拿回生成的文本。这是最基础、最常见的接入方式。'],
+    ['Token 计费','模型 API 按输入和输出的 Token 总量收费。成本控制是 AI 应用最核心的工程问题之一——很多产品失败就死在成本上。'],
+    ['流式输出（Streaming）','模型每生成一个 Token 就立刻返回，用户能看到文字逐字出现，而不是干等全部生成完。体验差距巨大，是 AI 应用的基本功。'],
+    ['Zero-shot / Few-shot','Zero-shot 是不给例子直接提问；Few-shot 是在提示词里先给几个示例，让模型照着模仿。Few-shot 通常能明显提升效果。'],
+    ['结构化输出','要求模型返回严格的 JSON 等格式，方便程序解析。常用 JSON Schema 做约束，是 AI 应用接入业务系统的前提。'],
+    ['Function Calling / Tool Use','让模型能够“调用工具”。你告诉模型有哪些函数可用，模型判断该调用哪个、该传什么参数，程序执行后把结果回传给模型。这是 Agent 的技术基础。'],
+    ['RAG（检索增强生成）','解决“模型不知道你的私有数据”和“幻觉”问题的主流方案。流程是：把文档切块后向量化存入向量库，用户提问时按语义检索出相关片段，塞进提示词里让模型基于这些片段作答。'],
+    ['Agent（智能体）','让大模型自己进行“规划 → 调用工具 → 观察结果 → 再规划”的循环系统。它不再只是回答问题，而是能够执行任务。典型例子：自动查资料写报告、自动改代码、自动操作浏览器。'],
+    ['Agent Loop（智能体循环）','Agent 的核心机制：思考 → 行动 → 观察 → 再思考，如此往复直到任务完成。理解了这个循环就理解了 Agent。'],
+    ['ReAct','一种经典的 Agent 范式，名字来自 Reasoning（推理）加 Acting（行动）：让模型交替输出推理过程和行动指令。'],
+    ['工具（Tool）','暴露给 Agent 使用的能力，通常实现为一个函数，比如查天气、搜网页、执行代码、读写文件。'],
+    ['MCP（模型上下文协议）','由 Anthropic 提出的开放协议，统一了“模型如何接入外部工具和数据源”的标准。在此之前每接一个工具都要写一套适配代码；MCP 相当于给 AI 装上了统一的 USB 接口。'],
+    ['多智能体（Multi-Agent）','多个 Agent 分工协作，比如一个负责规划、一个负责写代码、一个负责审查。代表框架有 CrewAI、AutoGen。'],
+    ['工作流编排（Workflow）','把多个模型调用和工具步骤按固定流程串起来，比如“先分类 → 再检索 → 再生成 → 再校验”。比 Agent 更可控、更便宜，工业界落地其实用得更普遍。'],
+    ['人机协同（Human-in-the-loop）','在关键环节引入人工确认或干预，用来降低全自动流程的风险。'],
+    ['Guardrails（护栏）','给 AI 应用加的安全限制：内容过滤、输出格式校验、敏感操作拦截。'],
+    ['上下文工程（Context Engineering）','比提示词工程更进一步：决定在有限的上下文窗口里究竟放什么信息——系统提示、历史对话、检索结果、工具定义。这是当前 AI 应用开发最核心的工程能力。'],
+    ['记忆（Memory）','让 Agent 跨对话记住信息。通常分短期记忆（当前对话）和长期记忆（存入数据库，需要时检索出来）。'],
+    ['LangChain / LlamaIndex','两个流行的 LLM 应用开发框架，封装了 RAG、Agent、工具调用等常见模块。入门时可以快速搭出原型。'],
+    ['知识库','把你的文档、资料整理成可被 RAG 检索的形式。企业级 AI 应用最常见的落地形态。'],
+    ['微调 vs RAG vs Prompt 的选型','三个问题决定方案：能让模型通过提示词做到吗？能就用 Prompt。需要私有知识吗？需要就用 RAG。需要改变模型的风格或能力边界吗？才考虑微调。大多数场景其实不需要微调。'],
+    ['Agentic','用来形容一个产品具备自主规划并执行多步任务的能力，是当前 AI 产品最重要的卖点词。'],
+    ['AI 产品经理（AI PM）','介于技术和业务之间的角色，负责定义 AI 能做什么、怎么落地、如何衡量效果。技术背景做这个岗位有天然优势。'],
+    ['模型路由（Model Routing）','根据任务难度自动选择用哪个模型——简单问题用便宜的小模型，难题才调贵的大模型。是控制成本的关键手段。'],
+    ['评测集（Eval Set）','你自己为业务场景准备的一批测试用例，用来衡量提示词或模型改动后效果是变好还是变差。没有评测集就没法迭代。']
+  ]
+},
+{
+  cat:'求职与职场',
+  desc:'理解规则才能利用规则。这一节的信息差，往往比技术本身更影响结果。',
+  terms:[
+    ['校招 / 社招','校招面向应届生，主要看潜力和基础；社招面向有工作经验的人，主要看即战力。两者的评价标准完全不同。'],
+    ['秋招 / 春招 / 提前批','秋招（8 到 11 月）是主战场，岗位最多；春招（3 到 5 月）是补录，岗位少但竞争也小；提前批（6 到 8 月）在秋招之前，往往门槛更灵活。'],
+    ['HC（Head Count）','招聘名额。HC 收紧就意味着招人变少，竞争加剧。'],
+    ['筛简历','HR 或系统按学校、专业、关键词过滤简历的第一关。这就是“学历门槛”的物理形态——所以你需要用项目和作品让别人绕不过你。'],
+    ['笔试 / 面试轮次','典型流程是：笔试 → 一面（技术基础）→ 二面（项目深挖）→ 三面或交叉面 → HR 面。'],
+    ['八股文','面试需要背诵的标准知识点，比如 TCP 三次握手、进程与线程的区别、MySQL 索引原理。这是技术面试的基础分，必须拿下。'],
+    ['算法题 / 手撕代码','面试现场写代码解算法题，题库主要来自 LeetCode。大厂基本必考。'],
+    ['项目深挖','面试官针对你简历上的项目连续追问细节，用来检验你是不是真的做过。这是双非学生最能实现逆袭的环节——项目讲得深，学历的权重就会被压下去。'],
+    ['内推','通过在职员工把你的简历直接递到 HR 或团队手里，能绕过部分筛选环节。是性价比最高的求职手段，务必用起来。'],
+    ['总包','一年的总收入，包含月薪乘以月数、奖金以及股票或期权。谈薪资时说的都是总包。'],
+    ['白菜价 / SP / SSP','校招 offer 的薪资档位。白菜是标准档，SP（Special Offer）高一档，SSP 是最高档，通常给算法岗和顶尖工程岗。'],
+    ['期权 / RSU（股票）','部分报酬以公司股份形式发放，需要满足服务年限等条件才能兑现。创业公司的期权风险高但潜在回报大。'],
+    ['大厂 / 中厂 / 独角兽','大厂指头部互联网公司；独角兽指估值超过 10 亿美元的未上市公司。'],
+    ['外包 / 驻场','外包是给第三方公司干活、再被派到大厂驻场办公。薪资、归属感和简历含金量通常都明显低于正式员工，第一份工作尽量避开。'],
+    ['KPI / OKR','KPI 是量化考核指标；OKR 是目标（Objective）加关键结果（Key Results），更强调方向对齐而非单纯考核。'],
+    ['996 / 大小周','996 是早 9 点到晚 9 点、一周工作 6 天；大小周是这周休两天、下周休一天。'],
+    ['内卷','在存量竞争的环境里所有人都付出更多努力，但整体收益并没有增加。'],
+    ['对齐（职场语境）','开会确认双方理解一致。属于高频职场黑话。'],
+    ['抓手 / 落地 / 闭环 / 赋能','典型职场黑话。抓手是切入点；落地是真正做出来；闭环是有始有终形成循环；赋能是提供支持让对方变强。能听懂就行，不必刻意用。'],
+    ['背书','用他人的信誉为你做担保，比如大厂实习经历、名校学历、知名开源项目。双非学生最需要主动积累的就是这个。'],
+    ['职业天花板','某个岗位或路径能达到的最高位置和收入上限。判断一条路值不值得走，先看它的天花板。'],
+    ['ROI（投入产出比）','投入的资源与获得的回报之比。这是判断一切选择的基本工具——包括要不要考研、要不要学某个技术。']
+  ]
+},
+{
+  cat:'计算机系统与硬件常识',
+  desc:'不用深挖，但必须消除陌生感。这些词每天都在出现。',
+  terms:[
+    ['CPU','通用处理器，擅长复杂逻辑和串行任务。核心数少但每个核都很强。'],
+    ['GPU','图形处理器，拥有成千上万个小型核心，擅长并行计算。深度学习本质上是海量的矩阵运算，所以 GPU 是 AI 的主力硬件。'],
+    ['TPU / NPU','专为 AI 计算设计的芯片。TPU 是谷歌自研的，NPU 常见于手机芯片中。'],
+    ['内存（RAM）/ 硬盘（SSD / HDD）','内存是运行时的临时工作区，断电就清空，速度极快；硬盘是永久存储，容量大但速度慢得多。'],
+    ['显存（VRAM）','GPU 自带的内存，模型参数和中间计算结果都要放进去。能跑多大的模型基本由显存决定，“显存不够”是最常见的报错。'],
+    ['操作系统 / 内核','管理硬件资源、为程序提供运行环境的系统软件。Windows、Linux、macOS 是三大主流。服务器领域 Linux 占绝对主导，务必熟悉。'],
+    ['Linux / 发行版','开源操作系统，Ubuntu、Debian、CentOS 都是它的发行版。你部署 AI 应用时打交道的几乎全是它。'],
+    ['终端 / Shell / 命令行','终端是那个黑色窗口；Shell 是解释你输入命令的程序（Bash、Zsh、PowerShell）。服务器上没有图形界面，一切操作靠命令行。'],
+    ['PATH / 环境变量','PATH 告诉系统“去哪些目录里找可执行程序”。配置开发环境 90% 的问题都出在这里。'],
+    ['WSL（Windows Subsystem for Linux）','让你在 Windows 里直接运行 Linux 环境的官方方案。在 Windows 上开发和部署 AI 项目，这是推荐方式。'],
+    ['虚拟化 / 双系统','在一台机器上运行多个操作系统的方案。双系统需要重启切换，虚拟化可以同时运行但性能有损耗。'],
+    ['云服务器 / 云服务','按需租用的远程计算资源，如阿里云、腾讯云、AWS。跑 AI 训练通常租 GPU 云服务器，而不是自己买显卡。'],
+    ['本地部署 vs 云端调用','本地部署数据不出门、无调用费用，但需要硬件和运维成本；云端调用开箱即用、按量付费，但数据要出网且长期成本可能更高。'],
+    ['开源 / 闭源','开源指源代码公开、可查看可修改；闭源只提供编译好的成品，看不到内部实现。'],
+    ['协议 / 端口','协议是通信规则（HTTP、SSH、TCP）；端口是同一台机器上区分不同服务的数字编号。'],
+    ['ASCII / UTF-8 / 编码','字符在计算机中的表示方式。Windows 上中文乱码问题基本都源于编码不一致，UTF-8 是现代通用标准。'],
+    ['大小写敏感','Linux 系统中文件路径区分大小写（File.txt 和 file.txt 是两个文件），Windows 不区分。跨平台开发时经常踩这个坑。'],
+    ['绝对路径 / 相对路径','绝对路径从根目录写起（如 /home/user/a.txt），相对路径基于当前所在目录（如 ./a.txt）。写脚本时优先用绝对路径，能避免大量诡异问题。']
+  ]
+}
+];
+
+const main = document.getElementById('main');
+const nav = document.getElementById('nav');
+const q = document.getElementById('q');
+const cnt = document.getElementById('cnt');
+let activeCat = null;
+
+const total = DATA.reduce((s,c)=>s+c.terms.length,0);
+
+function esc(s){ return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+function hl(text, kw){
+  const safe = esc(text);
+  if(!kw) return safe;
+  const re = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+  return safe.replace(re, m => '<mark>' + m + '</mark>');
+}
+
+function render(){
+  const kw = q.value.trim();
+  let shown = 0;
+  let html = '';
+  const navHtml = [];
+
+  navHtml.push('<button data-cat="" class="' + (activeCat===null?'on':'') + '">全部术语<span>' + total + '</span></button>');
+
+  DATA.forEach((c, ci) => {
+    if(activeCat !== null && activeCat !== ci) {
+      navHtml.push('<button data-cat="' + ci + '">' + esc(c.cat) + '<span>' + c.terms.length + '</span></button>');
+      return;
+    }
+    const hit = c.terms.filter(t =>
+      !kw || (t[0] + t[1]).toLowerCase().includes(kw.toLowerCase())
+    );
+    navHtml.push('<button data-cat="' + ci + '" class="' + (activeCat===ci?'on':'') + '">' + esc(c.cat) + '<span>' + hit.length + '</span></button>');
+    if(!hit.length) return;
+    shown += hit.length;
+    html += '<section class="cat"><h2>' + esc(c.cat) + '</h2><div class="meta">' + esc(c.desc) + ' · 共 ' + hit.length + ' 条</div>';
+    hit.forEach(t => {
+      html += '<div class="term"><div class="n">' + hl(t[0], kw) + '</div><div class="d">' + hl(t[1], kw) + '</div></div>';
+    });
+    html += '</section>';
+  });
+
+  main.innerHTML = html || '<div class="empty">没有匹配的术语，换个关键词试试</div>';
+  nav.innerHTML = navHtml.join('');
+  cnt.textContent = kw ? shown + ' / ' + total : total + ' 条术语';
+
+  nav.querySelectorAll('button').forEach(b => {
+    b.onclick = () => {
+      const v = b.dataset.cat;
+      activeCat = v === '' ? null : Number(v);
+      render();
+      window.scrollTo({top:0, behavior:'smooth'});
+    };
+  });
+}
+
+q.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

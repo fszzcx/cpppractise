@@ -1,0 +1,40 @@
+# C++ 编译产物（Windows / MSYS2 / MSVC）
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.o
+
+# Linux / WSL 编译产物（无扩展名，逐个列出以避免误伤源码）
+hello_env
+hello_wsl
+case_convert
+char_triangle
+const_33_min
+fixed_8d
+lab1_circle
+lab1_uninit
+lab4_pointer
+lab5_reference
+prog_A_fixed
+prog_B_run
+prog_C_fixed
+scanf_demo
+star_d_bug
+star_pairing
+star_width
+swap_and_case
+swap_ptr_min
+swap_ref_min
+void_ptr_demo
+width8d
+width8d_compare
+width_align
+
+# 编辑器 / 系统
+.vscode/*.bak
+.DS_Store
+Thumbs.db
+
+# 代理工具（非代码内容，不进仓库）
+v2rayN-tools/

@@ -1,0 +1,23 @@
+# Visual Studio 编译与中间产物
+.vs/
+x64/
+Debug/
+Release/
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.log
+*.tlog
+*.ipch
+*.VC.db
+*.VC.opendb
+
+# 用户本地设置（每台机器不同，不进仓库）
+*.user
+*.suo
+
+# 系统文件
+Thumbs.db
+Desktop.ini
